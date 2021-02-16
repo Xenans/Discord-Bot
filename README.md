@@ -3,8 +3,8 @@ This repository contains the code behind Bot-Moderator Bot, with features such a
 
 Make sure to include your token in a `token.json>` file!
 
-'''
+```javascript
 {
 	"token": "your.token.here"
 }
-'''
+```
