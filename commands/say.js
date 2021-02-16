@@ -9,6 +9,13 @@ module.exports = {
 		}
 		concat = ""
 		for (arg of args) {
+			//Filter @everyone
+			if (arg === "@everyone")
+			{
+				concat += " " + "@.everyone"
+				continue;
+			}
+			//Filter mentions
 			const matches = arg.match(/^<@!?(\d+)>$/);
 			if (matches)
 			{
