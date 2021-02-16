@@ -1,11 +1,13 @@
 // require file system module to read files
 const fs = require('fs');
 const path = require('path');
+// require dotenv to read local environment variables
+require('dotenv').config()
 // require the discord.js module
 const Discord = require('discord.js');
-//const { prefix, token } = require(path.resolve('./config.json'));
+
 const { prefix } = require('./config.json');
-const { token } = require('./token.json')
+const token = process.env.token;
 
 // create a new Discord client
 const client = new Discord.Client({presence: {activity: {name: `${prefix}help`}}});
