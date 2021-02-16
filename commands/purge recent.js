@@ -6,7 +6,7 @@ module.exports = {
     `Usage: \`${prefix}purgerecent <person> [time]\`\n
     Not implemented\n
     Clears the most recent messages within a given time in minutes.`,
-	execute(message, args) {
+	execute(message, args, client) {
         return
         if (!args.length) {
             return message.channel.send(`No arguments provided. See \`${prefix}help purge\` for more information.`)

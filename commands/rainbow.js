@@ -4,7 +4,7 @@ module.exports = {
 	name: 'rainbow',
     description: `Usage: \`${prefix}rainbow\`\n
     Find the embed color of your dreams!`,
-	execute(message, args) {
+	execute(message, args, client) {
         color = [127, 127, 127]
         const embed = new Discord.MessageEmbed()
         .setColor(color)

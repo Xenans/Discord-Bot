@@ -7,7 +7,7 @@ module.exports = {
     Clears the most recent messages.\n
     Number cannot exceed 10 to prevent abuse.`,
     
-	execute(message, args) {
+	execute(message, args, client) {
         if (!args.length) {
             return message.channel.send(`No arguments provided. See \`${prefix}help purge\` for more information.`)
         } else if (args.length === 1) {

@@ -7,7 +7,7 @@ module.exports = {
     description: 
     `Usage: \`${prefix}help [command name]\`\n
     Provides a list of usable commands, or further information on how to use a command.`,
-	execute(message, args) {
+	execute(message, args, client) {
         const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 
         //Parse possible commands
