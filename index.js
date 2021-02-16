@@ -4,7 +4,8 @@ const path = require('path');
 // require the discord.js module
 const Discord = require('discord.js');
 //const { prefix, token } = require(path.resolve('./config.json'));
-const { prefix, token } = require('./config.json');
+const { prefix } = require('./config.json');
+const { token } = require('./token.json')
 
 // create a new Discord client
 const client = new Discord.Client({presence: {activity: {name: `${prefix}help`}}});

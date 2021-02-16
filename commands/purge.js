@@ -16,8 +16,8 @@ module.exports = {
                 return message.channel.send(`Please provide an integer number of messages to delete.`)
             } else if (amount <= 0) {
                 return message.channel.send(`Please provide a positive number of messages to delete`)
-            } else if (amount > 10) {
-                return message.channel.send(`At most 10 messages ~~can~~ will be deleted at a time.`)
+            } else if (amount > 50) {
+                return message.channel.send(`At most 50 messages ~~can~~ will be deleted at a time.`)
             }
             return message.channel.bulkDelete(amount)
         } else {
@@ -32,8 +32,8 @@ module.exports = {
                 return message.channel.send(`Please provide an integer number of messages to delete.`)
             } else if (amount <= 0) {
                 return message.channel.send(`Please provide a positive number of messages to delete`)
-            } else if (amount > 10) {
-                return message.channel.send(`At most 10 messages ~~can~~ will be deleted at a time.`)
+            } else if (amount > 50) {
+                return message.channel.send(`At most 50 messages ~~can~~ will be deleted at a time.`)
             }
             messagesToDelete = new Array();
             count = 0
