@@ -5,7 +5,7 @@ module.exports = {
     description: 
     `Usage: \`${prefix}purge [person] <number>\`\n
     Clears the most recent messages.\n
-    Number cannot exceed 10 to prevent abuse.`,
+    Number cannot exceed 50 to prevent abuse.`,
     
 	execute(message, args, client) {
         if (!args.length) {
