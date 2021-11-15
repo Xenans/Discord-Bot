@@ -6,3 +6,7 @@ Make sure to include your token in a `.env` file. Alternatively, this bot can be
 ```
 token=your.token.here
 ```
+
+# Structure
+
+`index.js` handles reading user messages and awaits messages with the appropriate command prefix. The commands under the `\commands` folder are visible to all users and listed by the `help` command.
