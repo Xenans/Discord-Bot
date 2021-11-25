@@ -1,20 +1,17 @@
 const fs = require('fs');
-const path = require('path');
-const Discord = require('discord.js');
-const { prefix } = require('./config.json');
-// const MongoClient = require('mongodb').MongoClient;
-
-
+const discord = require('discord.js');
+const config = require('./config.json');
+const { MongoClient } = require('mongodb');
 const dotenv = require('dotenv').config()
 if (dotenv.error) {
-    console.log("Error reading from .env file. You can ignore this if you are running on a cloud server and have initialized environment variables.")
+    console.log("Warning: Error reading from .env file. You can ignore this if you are running on a cloud server and have initialized environment variables.")
 }
 
 // Can read from either a .env file or local variables in a cloud runtime
 const token = process.env.TOKEN;
 
-const client = new Discord.Client({ presence: { activity: { name: `${prefix}help` } } });
-client.commands = new Discord.Collection();
+const client = new discord.Client({ presence: { activity: { name: `${config.prefix}help` } } });
+client.commands = new discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -24,28 +21,28 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command);
 }
 
-// // Set up mongodb stuff
+// Set up mongodb stuff
+const mongoUsername = process.env.MONGO_USERNAME;
+const mongoPassword = process.env.MONGO_PASSWORD;
 
+const uri = `mongodb+srv://${mongoUsername}:${mongoPassword}@bot-moderator.gbwpq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+console.log(uri)
+const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// let mongoUsername = process.env.MONGO_USERNAME;
-// let mongoPassword = process.env.MONGO_PASSWORD;
-
-// const uri = "mongodb+srv://" + mongoUsername + ":" + mongoPassword + "@bot-moderator.gbwpq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-// const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-
-// async function run() {
-//     try {
-//         await mongoClient.connect();
-//         console.log("Connected correctly to server");
-//     } catch (err) {
-//         console.log(err.stack);
-//     }
-//     finally {
-//         await mongoClient.close();
-//     }
-// }
-// run().catch(console.dir);
-
+async function run() {
+    try {
+        console.log("Trying to connect to server")
+        await mongoClient.connect();
+        console.log("Connected correctly to server");
+    } catch (err) {
+        console.log(err.stack);
+    }
+    finally {
+        await mongoClient.close();
+        console.log("Closing server...")
+    }
+}
+run().catch(console.dir)
 
 // mongoUtil.connectToServer(function(err, client){
 //     if (err) console.log(err);
@@ -59,14 +56,15 @@ for (const file of commandFiles) {
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.once('ready', () => {
-    //client.user.setActivity(`${prefix}help`)
+    //client.user.setActivity(`${config.prefix}help`)
     console.log('Hello World!');
 });
 
 client.on('message', message => {
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
+    if (!message.content.startsWith(config.prefix) || message.author.bot) return;
+    console.log(message.content)
 
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const args = message.content.slice(config.prefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
 
     if (!client.commands.has(commandName)) return;
