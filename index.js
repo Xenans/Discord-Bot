@@ -1,7 +1,6 @@
 const fs = require('fs');
 const discord = require('discord.js');
 const config = require('./config.json');
-const { MongoClient } = require('mongodb');
 const dotenv = require('dotenv').config()
 if (dotenv.error) {
     console.log("Warning: Error reading from .env file. You can ignore this if you are running on a cloud server and have initialized environment variables.")
@@ -21,35 +20,7 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command);
 }
 
-// Set up mongodb stuff
-const mongoUsername = process.env.MONGO_USERNAME;
-const mongoPassword = process.env.MONGO_PASSWORD;
-
-const uri = `mongodb+srv://${mongoUsername}:${mongoPassword}@bot-moderator.gbwpq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
-console.log(uri)
-const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-async function run() {
-    try {
-        console.log("Trying to connect to server")
-        await mongoClient.connect();
-        console.log("Connected correctly to server");
-    } catch (err) {
-        console.log(err.stack);
-    }
-    finally {
-        await mongoClient.close();
-        console.log("Closing server...")
-    }
-}
-run().catch(console.dir)
-
-// mongoUtil.connectToServer(function(err, client){
-//     if (err) console.log(err);
-//     // start the rest of your app here
-//   });
-
-
+const mongoConnect = require('./connect.js')
 
 // Discordbot code below
 
