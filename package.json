@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/builders": "^0.8.2",
     "discord.js": "^12.5.3",
     "dotenv": "^8.6.0",
     "mongodb": "^3.6.9"

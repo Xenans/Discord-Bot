@@ -1,4 +1,5 @@
 const config = require('../config.json');
+
 module.exports = {
     name: 'choose',
     description: `Usage: \`${config.prefix}choose\``,
@@ -8,9 +9,8 @@ module.exports = {
         console.log(choices)
         const randomChoice = choices[Math.floor(Math.random() * choices.length)];
 
-        // TODO: Deal with empty message edge case
         if (randomChoice) {
-            message.channel.send(`${randomChoice} of course`)
+            message.channel.send(`'${randomChoice}' of course`)
         } else {
             message.reply(`please provide a valid choice...`)
         }
