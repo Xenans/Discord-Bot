@@ -17,7 +17,8 @@ module.exports.checkReactions = async function (message) {
         keys = await mongoClient.db('reactions').collection(message.guild.id).find({}).toArray()
         for (document of keys) {
             key = document.key
-            if (message.content.includes(key)) {
+            let words = message.content.split(/ +/)
+            if (words.includes(key)) {
                 message.channel.send(utils.chooseRandom(document.response))
             }
         }
