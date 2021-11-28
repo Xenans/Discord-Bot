@@ -1,13 +1,12 @@
 const config = require('../config.json');
+const utils = require('../helpers/utils.js')
 
 module.exports = {
     name: 'choose',
     description: `Usage: \`${config.prefix}choose\``,
     execute(message, args, client) {
-        console.log(message.content)
         let choices = message.content.slice(config.prefix.length + this.name.length).split(/\|/).map(choice => choice.trim())
-        console.log(choices)
-        const randomChoice = choices[Math.floor(Math.random() * choices.length)];
+        const randomChoice = utils.chooseRandom(choices)
 
         if (randomChoice) {
             message.channel.send(`'${randomChoice}' of course`)

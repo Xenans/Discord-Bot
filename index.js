@@ -2,9 +2,10 @@ const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const config = require('./config.json');
 const mongoClient = require('./helpers/mongoClient.js')
+const reactions = require('./reactions/reactions.js')
 const dotenv = require('dotenv').config()
 if (dotenv.error) {
-  console.log("Warning: Error reading from .env file. You can ignore this if you are running on a cloud server and have initialized environment variables.")
+    console.log("Warning: Error reading from .env file. You can ignore this if you are running on a cloud server and have initialized environment variables.")
 }
 
 const client = new Client({ presence: { activity: { name: `${config.prefix}help` } }, intents: [Intents.FLAGS.GUILDS] });
@@ -12,48 +13,56 @@ client.commands = new Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-  // set a new item in the Collection with the key as the command name and the value as the exported module
-  client.commands.set(command.name, command);
+    const command = require(`./commands/${file}`);
+    // set a new item in the Collection with the key as the command name and the value as the exported module
+    client.commands.set(command.name, command);
 }
 
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.once('ready', () => {
-  //client.user.setActivity(`${config.prefix}help`)
-  console.log(`Hello World! My name is ${client.user.tag}!`);
+    //client.user.setActivity(`${config.prefix}help`)
+    console.log(`Hello World! My name is ${client.user.tag}!`);
 });
 
 client.on('message', message => {
-  if (!message.content.startsWith(config.prefix) || message.author.bot) return;
-  console.log(message.content)
+    if (message.author.bot) return;
+    // TODO: Check for reactions here
 
-  const args = message.content.slice(config.prefix.length).trim().split(/ +/);
-  const commandName = args.shift().toLowerCase();
+    reactions.checkReactions(message)
 
-  if (!client.commands.has(commandName)) return;
 
-  const command = client.commands.get(commandName);
+    if (!message.content.startsWith(config.prefix)) return;
+    // Command stuff here
 
-  try {
-    command.execute(message, args, client);
-  } catch (error) {
-    console.error(error);
-    message.reply('there was an error trying to execute that command!');
-  }
+    // Log command testing
+
+    const args = message.content.slice(config.prefix.length).trim().split(/ +/);
+    const commandName = args.shift().toLowerCase();
+
+    if (!client.commands.has(commandName)) return;
+
+    const command = client.commands.get(commandName);
+
+    try {
+        command.execute(message, args, client);
+    } catch (error) {
+        console.error(error);
+        message.reply('there was an error trying to execute that command!');
+    }
 });
 
 async function main() {
-  try {
-    console.log("Connecting to MongoDB database...")
-    await mongoClient.connect();
-    console.log("Connection established with MongoDB database!");
-  } catch (err) {
-    console.log(err.stack);
-  }
+    try {
+        console.log("Connecting to MongoDB database...")
+        await mongoClient.connect();
+        console.log("Connection established with MongoDB database!");
+    } catch (err) {
+        console.log(err.stack);
+    }
 
-  let token = process.env.TOKEN;
-  client.login(token);
+    let token = process.env.TOKEN;
+    client.login(token);
 }
 
 main().catch(console.dir)
