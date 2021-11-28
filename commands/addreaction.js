@@ -6,7 +6,7 @@ module.exports = {
     name: 'addreaction',
     description: `Placeholder text lol, wrap the response in \\\`backticks\\\``,
     async execute(message, args, client) {
-        let reactionResponse = message.content.match(/`.+`/)[0]
+        let reactionResponse = message.content.match(/`(.+)`/)[1]
         reactionKey = args[0]
         if (args.length <= 1 || !reactionResponse) {
             console.log(`response is supposedly "${reactionResponse}"`)
@@ -17,7 +17,7 @@ module.exports = {
 
         let matches = await mongoClient.db('reactions').collection(message.guild.id).find({ key: reactionKey }).toArray()
         console.log(matches)
-        if (matches) {
+        if (matches.length) {
             let match = matches[0]
             let existing = match.response
             existing.push(reactionResponse)

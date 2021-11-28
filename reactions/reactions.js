@@ -18,7 +18,7 @@ module.exports.checkReactions = async function (message) {
         for (document of keys) {
             key = document.key
             if (message.content.includes(key)) {
-                message.channel.send(document.response)
+                message.channel.send(utils.chooseRandom(document.response))
             }
         }
         return
