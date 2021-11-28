@@ -27,10 +27,13 @@ client.once('ready', () => {
 
 client.on('message', message => {
     if (message.author.bot) return;
-    reactions.checkReactions(message)
+    if (!message.content.startsWith(config.prefix)) {
+        reactions.checkReactions(message)
+        return
+    }
 
 
-    if (!message.content.startsWith(config.prefix)) return;
+
     // Command stuff here
 
     // Log command testing

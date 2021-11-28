@@ -8,7 +8,7 @@ module.exports = {
     async execute(message, args, client) {
         for (let arg of args) {
             mongoClient.db('reactions').collection(message.guild.id).deleteOne({ key: arg })
-            return message.channel.send(`Deleted all reactions for the key "${arg}""`)
+            return message.channel.send(`Deleted all reactions for the key "${arg}"`)
         }
     },
 };

@@ -6,7 +6,7 @@ module.exports = {
     name: 'addreaction',
     description: `Placeholder text lol, wrap the response in \\\`backticks\\\``,
     async execute(message, args, client) {
-        let reactionResponse = message.content.match(/`(.+)`/)[1]
+        let reactionResponse = message.content.match(/`(.+)`/)
         reactionKey = args[0]
         if (args.length <= 1 || !reactionResponse) {
             console.log(`response is supposedly "${reactionResponse}"`)
@@ -20,11 +20,11 @@ module.exports = {
         if (matches.length) {
             let match = matches[0]
             let existing = match.response
-            existing.push(reactionResponse)
+            existing.push(reactionResponse[1])
             await mongoClient.db('reactions').collection(message.guild.id).updateOne({ key: reactionKey }, { $set: { response: existing } })
             return message.channel.send(`Updated reactions for the key "${reactionKey}"`)
         } else {
-            await mongoClient.db('reactions').collection(message.guild.id).insertOne({ key: reactionKey, response: [reactionResponse] })
+            await mongoClient.db('reactions').collection(message.guild.id).insertOne({ key: reactionKey, response: [reactionResponse[1]] })
             return message.channel.send(`Added reaction for the key "${reactionKey}"`)
         }
     },
