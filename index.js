@@ -27,8 +27,6 @@ client.once('ready', () => {
 
 client.on('message', message => {
     if (message.author.bot) return;
-    // TODO: Check for reactions here
-
     reactions.checkReactions(message)
 
 
