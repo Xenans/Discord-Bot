@@ -6,7 +6,8 @@ module.exports = {
     name: 'addreaction',
     description: `Placeholder text lol, wrap the response in \\\`backticks\\\``,
     async execute(message, args, client) {
-        let reactionResponse = message.content.match(/`(.+)`/)
+        let reactionResponse = message.content.match(/`([\s\S]+)`/)
+        console.log(reactionResponse)
         reactionKey = args[0]
         if (args.length <= 1 || !reactionResponse) {
             console.log(`response is supposedly "${reactionResponse}"`)
