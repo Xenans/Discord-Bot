@@ -15,16 +15,16 @@ module.exports = {
         }
         console.log(`Adding reaction for '${reactionKey}'`)
 
-        let matches = await mongoClient.db('reactions').collection(message.guild.id).find({ key: reactionKey }).toArray()
+        let matches = await mongoClient.db('reactions').collection(message.guild.id).find({ key: reactionKey.toLowerCase() }).toArray()
         console.log(matches)
         if (matches.length) {
             let match = matches[0]
             let existing = match.response
             existing.push(reactionResponse[1])
-            await mongoClient.db('reactions').collection(message.guild.id).updateOne({ key: reactionKey }, { $set: { response: existing } })
+            await mongoClient.db('reactions').collection(message.guild.id).updateOne({ key: reactionKey.toLowerCase() }, { $set: { response: existing } })
             return message.channel.send(`Updated reactions for the key "${reactionKey}"`)
         } else {
-            await mongoClient.db('reactions').collection(message.guild.id).insertOne({ key: reactionKey, response: [reactionResponse[1]] })
+            await mongoClient.db('reactions').collection(message.guild.id).insertOne({ key: reactionKey.toLowerCase(), response: [reactionResponse[1]] })
             return message.channel.send(`Added reaction for the key "${reactionKey}"`)
         }
     },

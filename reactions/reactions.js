@@ -13,17 +13,15 @@ module.exports.checkReactions = async function (message) {
 
     let doesMatch = await mongoClient.db('reactions').listCollections({ name: message.guild.id }).toArray()
     if (doesMatch.length) {
-        console.log(`Message "${message.content}" has a valid server associated!`)
         keys = await mongoClient.db('reactions').collection(message.guild.id).find({}).toArray()
         for (document of keys) {
             key = document.key
-            let words = message.content.split(/ +/)
+            let words = message.content.toLowerCase().split(/ +/)
             if (words.includes(key)) {
                 message.channel.send(utils.chooseRandom(document.response))
             }
         }
         return
     } else {
-        console.log(`Could not find a server for message "${message.content}"!`)
     }
 }
