@@ -4,8 +4,8 @@ const mongoClient = require('../helpers/mongoClient.js');
 
 module.exports = {
     name: 'addreaction',
-    description: `Usage: \`${prefix}addreaction [key] [response]\`
-    Adds an automatic response to the bot. Every time the key is detected in a message, the bot will repond with the response. The \`[response]\` should be wrapped in backticks (\`\`).`,
+    description: `Usage: \`\`${prefix}addreaction [key] \`[response]\` \`\`
+    Adds an automatic response to the bot. Every time the key is detected in a message, the bot will repond with the response.`,
     async execute(message, args, client) {
         let reactionResponse = message.content.match(/`([\s\S]+)`/)
         console.log(reactionResponse)
