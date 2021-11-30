@@ -4,7 +4,8 @@ const mongoClient = require('../helpers/mongoClient.js');
 
 module.exports = {
     name: 'listreactions',
-    description: `Placeholder text lol`,
+    description: `Usage: \`${prefix}listreactions <key>\`
+    Lists all reactions in the current server, or if key was provided, all reactions for the given key.`,
     async execute(message, args, client) {
         let key = args[0]
         if (key) {

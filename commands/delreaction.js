@@ -4,7 +4,8 @@ const mongoClient = require('../helpers/mongoClient.js');
 
 module.exports = {
     name: 'delreaction',
-    description: `Placeholder text lol`,
+    description: `Usage: \`${prefix}delreaction [key]\`
+    Deletes all reactions for a given key.`,
     async execute(message, args, client) {
         for (let arg of args) {
             mongoClient.db('reactions').collection(message.guild.id).deleteOne({ key: arg })

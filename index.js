@@ -18,26 +18,18 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command);
 }
 
-// when the client is ready, run this code
-// this event will only trigger one time after logging in
+// this event will only trigger once after the client is ready and logging in
 client.once('ready', () => {
-    //client.user.setActivity(`${config.prefix}help`)
     console.log(`Hello World! My name is ${client.user.tag}!`);
 });
 
 client.on('message', message => {
     if (message.author.bot) return;
+    // If it's not a command, check for reactions
     if (!message.content.startsWith(config.prefix)) {
         reactions.checkReactions(message)
         return
     }
-
-
-
-    // Command stuff here
-
-    // Log command testing
-
     const args = message.content.slice(config.prefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
 
