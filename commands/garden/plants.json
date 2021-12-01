@@ -1,0 +1,32 @@
+{
+    "🟩": {
+        "tier": 0,
+        "cost": 0,
+        "rate": 0,
+        "description": "An empty patch of grass."
+    },
+    "🕳️": {
+        "tier": 0,
+        "cost": 0,
+        "rate": 0,
+        "description": "A hole in the ground... You should plant something here!"
+    },
+    "🥀": {
+        "tier": 0,
+        "cost": 0,
+        "rate": 0.01,
+        "description": "A poor, wilting flower."
+    },
+    "🌷": {
+        "tier": 1,
+        "cost": 1,
+        "rate": 0.05,
+        "description": "A standard pink tulip."
+    },
+    "🌳": {
+        "tier": 1,
+        "cost": 5,
+        "rate": 0.10,
+        "description": "A deciduous tree that appears to be the same size as a flower."
+    }
+}

@@ -10,7 +10,8 @@ module.exports = {
         const randomChoice = utils.chooseRandom(choices)
 
         if (randomChoice) {
-            message.channel.send(`"${randomChoice}"" of course`)
+            message.channel.send(`"${randomChoice}" of course`)
+            // message.channel.send(`"${randomChoice}" is the best choice`)
         } else {
             message.reply(`please provide a valid choice...`)
         }
