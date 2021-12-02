@@ -77,7 +77,6 @@ process.on('exit', gracefulShutdown);
 // This will handle kill commands, such as CTRL+C:
 process.on('SIGINT', gracefulShutdown);
 process.on('SIGTERM', gracefulShutdown);
-process.on('SIGKILL', gracefulShutdown);
 
 // This will prevent dirty exit on code-fault crashes:
 process.on('uncaughtException', gracefulShutdown);
