@@ -62,8 +62,9 @@ async function main() {
 main().catch(console.dir)
 
 
-function gracefulShutdown() {
-    // First argument is [force], see mongoose doc.
+function gracefulShutdown(err) {
+    console.log(err)
+    mongoClient.db('log').collection(message.guild.id).insertOne({ message: err })
     mongoClient.close(false, () => {
         console.log('MongoDb connection closed.');
     });
