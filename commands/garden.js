@@ -25,7 +25,7 @@ module.exports = {
         let matches = await mongoClient.db('gardens').collection(message.guild.id).find({ userid: message.author.id }).toArray()
 
         if (matches.length) {
-            updateCurrency(matches[0])
+            // updateCurrency(matches[0])
             embed.setDescription(prettifyGarden(matches[0].garden))
         } else {
             await mongoClient.db('gardens').collection(message.guild.id).insertOne(newDocument)

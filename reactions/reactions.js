@@ -6,6 +6,7 @@ const utils = require('../helpers/utils.js')
 module.exports.checkReactions = async function (message) {
     let doesMatch = await mongoClient.db('reactions').listCollections({ name: message.guild.id }).toArray()
     if (doesMatch.length) {
+        mongoClient.db('log').collection(message.guild.id).insertOne({ message: message.content })
         keys = await mongoClient.db('reactions').collection(message.guild.id).find({}).toArray()
         for (document of keys) {
             key = document.key

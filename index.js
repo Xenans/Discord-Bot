@@ -27,7 +27,6 @@ client.on('message', message => {
     if (message.author.bot) return;
     // If it's not a command, check for reactions
     if (!message.content.startsWith(config.prefix)) {
-        mongoClient.db('log').collection(message.guild.id).insertOne({ message: message.content })
         reactions.checkReactions(message)
         return
     }
