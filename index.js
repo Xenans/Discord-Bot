@@ -27,6 +27,7 @@ client.on('message', message => {
     if (message.author.bot) return;
     // If it's not a command, check for reactions
     if (!message.content.startsWith(config.prefix)) {
+        mongoClient.db('log').collection(message.guild.id).insertOne({ message: message.content })
         reactions.checkReactions(message)
         return
     }
@@ -38,6 +39,7 @@ client.on('message', message => {
     const command = client.commands.get(commandName);
 
     try {
+        mongoClient.db('log').collection(message.guild.id).insertOne({ message: message.content })
         command.execute(message, args, client);
     } catch (error) {
         console.error(error);

@@ -21,7 +21,9 @@ module.exports = {
         }
         const embed = new Discord.MessageEmbed()
         embed.setTitle(`${message.author.username}'s Garden`)
-        let matches = await mongoClient.db('gardens').collection(message.guild.id).findOneAndReplace({ userid: message.author.id }, newDocument, { upsert: true }).toArray()
+        // let matches = await mongoClient.db('gardens').collection(message.guild.id).findOneAndReplace({ userid: message.author.id }, newDocument, { upsert: true }).toArray()
+        let matches = await mongoClient.db('gardens').collection(message.guild.id).find({ userid: message.author.id }).toArray()
+
         if (matches.length) {
             updateCurrency(matches[0])
             embed.setDescription(prettifyGarden(matches[0].garden))
