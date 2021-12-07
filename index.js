@@ -38,7 +38,7 @@ client.on('message', message => {
     const command = client.commands.get(commandName);
 
     try {
-        mongoClient.db('log').collection(message.guild.id).insertOne({ message: message.content })
+        // mongoClient.db('log').collection(message.guild.id).insertOne({ message: message.content })
         command.execute(message, args, client);
     } catch (error) {
         console.error(error);
