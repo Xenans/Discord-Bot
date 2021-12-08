@@ -2,7 +2,6 @@
 const Discord = require('discord.js');
 const { prefix } = require('../config.json');
 const mongoClient = require('../helpers/mongoClient.js');
-const { Timestamp } = require('mongodb');
 
 module.exports = {
     name: 'garden',
@@ -13,34 +12,40 @@ module.exports = {
             userid: message.author.id,
             tags: [],
             balance: 0,
-            rate: 0,
-            lastUpdated: new Timestamp(),
-            lastDaily: new Timestamp(),
+            rate: 0.1,
+            lastUpdated: new Date(),
+            lastDaily: new Date(),
             garden: ['🕳️']
-            // garden: ['🕳️🕳️', '🕳️🕳️']
         }
         const embed = new Discord.MessageEmbed()
         embed.setTitle(`${message.author.username}'s Garden`)
-        // let matches = await mongoClient.db('gardens').collection(message.guild.id).findOneAndReplace({ userid: message.author.id }, newDocument, { upsert: true }).toArray()
-        let matches = await mongoClient.db('gardens').collection(message.guild.id).find({ userid: message.author.id }).toArray()
+        let match = await mongoClient.db('gardens').collection(message.guild.id).findOne({ userid: message.author.id })
+        console.log(match)
 
-        if (matches.length) {
-            // updateCurrency(matches[0])
-            embed.setDescription(prettifyGarden(matches[0].garden))
+        if (match) {
+            let updatedBalance = await updateCurrency(match, message)
+            embed.setDescription(prettifyGarden(match.garden) + updatedBalance.toString())
         } else {
             await mongoClient.db('gardens').collection(message.guild.id).insertOne(newDocument)
             embed.setDescription(prettifyGarden(newDocument.garden))
         }
+
+        console.log(new Date().toString())
         message.channel.send(embed)
 
     },
 };
 
-function updateCurrency(document) {
-    currentTime = new Timestamp()
-    timeDifference = (currentTime).subtract(document.lastUpdated)
-    console.log(timeDifference)
-    updatedBalanced = document.balance + document.rate * timeDifference
+async function updateCurrency(document, message) {
+    const currentTime = new Date()
+    const elapsed = (currentTime - document.lastUpdated) / 1000
+    console.log(elapsed)
+    const updatedBalance = document.balance + document.rate * elapsed
+    console.log(document.balance)
+    console.log(updatedBalance)
+    mongoClient.db('gardens').collection(message.guild.id).updateOne({ userid: message.author.id }, { $set: { lastUpdated: currentTime, balance: updatedBalance } })
+    return updatedBalance
+
 }
 
 function prettifyGarden(garden) {

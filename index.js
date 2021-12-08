@@ -64,7 +64,6 @@ main().catch(console.dir)
 
 function gracefulShutdown(err) {
     console.log(err)
-    mongoClient.db('log').collection(message.guild.id).insertOne({ message: err })
     mongoClient.close(false, () => {
         console.log('MongoDb connection closed.');
     });

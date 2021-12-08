@@ -17,10 +17,9 @@ module.exports = {
         }
         console.log(`Adding reaction for '${reactionKey}'`)
 
-        let matches = await mongoClient.db('reactions').collection(message.guild.id).find({ key: reactionKey.toLowerCase() }).toArray()
-        console.log(matches)
-        if (matches.length) {
-            let match = matches[0]
+        let match = await mongoClient.db('reactions').collection(message.guild.id).findOne({ key: reactionKey.toLowerCase() })
+        console.log(match)
+        if (match) {
             let existing = match.response
             existing.push(reactionResponse[1])
             await mongoClient.db('reactions').collection(message.guild.id).updateOne({ key: reactionKey.toLowerCase() }, { $set: { response: existing } })

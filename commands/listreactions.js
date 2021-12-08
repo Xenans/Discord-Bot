@@ -9,17 +9,17 @@ module.exports = {
     async execute(message, args, client) {
         let key = args[0]
         if (key) {
-            let responses = await mongoClient.db('reactions').collection(message.guild.id).find({ key: key }).toArray()
-            console.log(responses)
-            if (responses.length) {
-                return message.channel.send(responses[0].response)
+            let reaction = await mongoClient.db('reactions').collection(message.guild.id).findOne({ key: key })
+            console.log(reaction)
+            if (reaction) {
+                return message.channel.send(reaction.response)
             } else {
                 return message.channel.send(`No reactions found for the key ${key}!`)
             }
         } else {
-            let responses = await mongoClient.db('reactions').collection(message.guild.id).find({}).toArray()
+            let reactions = await mongoClient.db('reactions').collection(message.guild.id).find({}).toArray()
             let toSend = []
-            for (response of responses) {
+            for (response of reactions) {
                 toSend.push(response.key)
             }
             console.log(toSend)
