@@ -17,7 +17,14 @@ for (const file of commandFiles) {
     // set a new item in the Collection with the key as the command name and the value as the exported module
     client.commands.set(command.name, command);
 }
+client.gardenCommands = new Collection();
 
+const gardenCommandFiles = fs.readdirSync('./commands/garden').filter(file => file.endsWith('.js'));
+for (const file of gardenCommandFiles) {
+    const command = require(`./commands/garden/${file}`);
+    // set a new item in the Collection with the key as the command name and the value as the exported module
+    client.gardenCommands.set(command.name, command);
+}
 // this event will only trigger once after the client is ready and logging in
 client.once('ready', () => {
     console.log(`Hello World! My name is ${client.user.tag}!`);

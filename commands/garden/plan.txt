@@ -1,0 +1,4 @@
+Start with a 1x1 garden, with just a patch of grass. You can plant a basic succulent there.
+
+Uprooting a plant will leave a hole. It's functionally the same as a patch of grass, but looks different. Maybe something secret can happen here?
+

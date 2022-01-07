@@ -8,31 +8,50 @@ module.exports = {
     description: `Usage: \`\`${prefix}garden\`\`
     Grow your own garden! More commands to be added soon.`,
     async execute(message, args, client) {
-        const newDocument = {
-            userid: message.author.id,
-            tags: [],
-            balance: 0,
-            rate: 0.1,
-            lastUpdated: new Date(),
-            lastDaily: new Date(),
-            garden: ['🕳️']
+        console.log(args)
+        if (args.length) {
+            // Argument provided, use appropriate command
+            const commandName = args[0]
+            if (!client.gardenCommands.has(commandName)) return;
+
+            const command = client.gardenCommands.get(commandName);
+
+            try {
+                // mongoClient.db('log').collection(message.guild.id).insertOne({ message: message.content })
+                command.execute(message, args.slice(1), client);
+            } catch (error) {
+                console.error(error);
+                message.reply('there was an error trying to execute that command!');
+            }
         }
-        const embed = new Discord.MessageEmbed()
-        embed.setTitle(`${message.author.username}'s Garden`)
-        let match = await mongoClient.db('gardens').collection(message.guild.id).findOne({ userid: message.author.id })
-        console.log(match)
+        else {
+            // Default to providing a status update on the garden
+            // TODO: Check if this is the first time the garden command has been used, and if so explain how to use it
+            const newDocument = {
+                userid: message.author.id,
+                tags: [],
+                balance: 0,
+                rate: 0.1,
+                lastUpdated: new Date(),
+                lastDaily: new Date(),
+                garden: ['🕳️']
+            }
+            const embed = new Discord.MessageEmbed()
+            embed.setTitle(`${message.author.username}'s Garden`)
+            let match = await mongoClient.db('gardens').collection(message.guild.id).findOne({ userid: message.author.id })
+            console.log(match)
 
-        if (match) {
-            let updatedBalance = await updateCurrency(match, message)
-            embed.setDescription(prettifyGarden(match.garden) + updatedBalance.toString())
-        } else {
-            await mongoClient.db('gardens').collection(message.guild.id).insertOne(newDocument)
-            embed.setDescription(prettifyGarden(newDocument.garden))
+            if (match) {
+                let updatedBalance = await updateCurrency(match, message)
+                embed.setDescription(prettifyGarden(match.garden) + updatedBalance.toString())
+            } else {
+                await mongoClient.db('gardens').collection(message.guild.id).insertOne(newDocument)
+                embed.setDescription(prettifyGarden(newDocument.garden))
+            }
+
+            console.log(new Date().toString())
+            message.channel.send(embed)
         }
-
-        console.log(new Date().toString())
-        message.channel.send(embed)
-
     },
 };
 
@@ -45,7 +64,6 @@ async function updateCurrency(document, message) {
     console.log(updatedBalance)
     mongoClient.db('gardens').collection(message.guild.id).updateOne({ userid: message.author.id }, { $set: { lastUpdated: currentTime, balance: updatedBalance } })
     return updatedBalance
-
 }
 
 function prettifyGarden(garden) {
@@ -90,4 +108,7 @@ let emojiDictionary = {
     'i': '🇮',
     'j': '🇯'
 }
-//     🌸🌹🌺🌼💐🌻💮🌱🌲🌴🌵🌾🌿☘️🍀🍁🍂🍃🍇🍈🍊🍉🌶🏵🍄🌰🎍🥀🥝🥑🥔🥕🥒🥦
+// 🌸🌹🌺🌼💐🌻💮
+// 🌱🌲🌴🌵🌾🌿☘️🍀
+// 🍁🍂🍃
+// 🍇🍈🍊🍉🌶🏵🍄🌰🎍🥀🥝🥑🥔🥕🥒🥦
